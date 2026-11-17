@@ -1,4 +1,4 @@
-# DC-1 (VulnHub) — Penetration Test Report
+9# DC-1 (VulnHub) — Penetration Test Report
 
 **Date:** November 17, 2026  
 **Author:** Pawnfs  
@@ -119,7 +119,7 @@ find / -name "flag*.txt" -exec echo "=== {} ===" \; -exec /bin/cat {} \;
 Since `find` runs with effective UID 0, traversal of the `/root` directory and reading `thefinalflag.txt` succeeds, even though `www-data` has no direct access to this directory. This confirms full system compromise.
 
 ![Root Verification](root_whoami.png)
-![Flags](flag4.png)
+![Flags](finalflag.png)
 
 ---
 
