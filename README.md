@@ -85,7 +85,7 @@ Through the exploit's interactive mode (HTTP requests to `shell.php`), filesyste
 |------|----------|------|
 | flag1 | `/var/www/flag1.txt` | "Every good CMS needs a config file — and so do you" (points to `sites/default/settings.php`) |
 
-The file `sites/default/settings.php` reveals Drupal database connection credentials — user `dbuser`; the `users` table in the database stores the administrator's password hash. These credentials were used to access the MySQL backend directly and enumerate user records.
+The file `sites/default/settings.php` reveals Drupal database connection credentials in plaintext — user `dbuser`, password `R0ck3t`. While these credentials would allow direct access to the MySQL backend and extraction of the `users` table (containing admin password hashes), a more direct privilege escalation path was identified, so database access was not required to complete the compromise.
 
 ---
 
@@ -129,7 +129,7 @@ Since `find` runs with effective UID 0, traversal of the `/root` directory and r
 |------|----------|--------|
 | flag1 | `/var/www/flag1.txt` | Web shell, filesystem reading |
 | flag2 | `sites/default/settings.php` | Database credentials from Drupal configuration |
-| flag3 | Drupal database, `users` table | Administrator password hash |
+| flag3 | Drupal database, `users` table | Administrator password hash (discovered, not extracted) |
 | flag4 | `/home/flag4/flag4.txt` | Web shell, filesystem reading |
 | flag5 (final) | `/root/thefinalflag.txt` | Privilege escalation via SUID `find` |
 
@@ -159,11 +159,9 @@ Since `find` runs with effective UID 0, traversal of the `/root` directory and r
 
 ## Tools Used
 
-- `arp-scan`, `nmap`
-- `drupalgeddon2.rb` (GitHub: dreadlocked/Drupalgeddon2)
-- `curl`
-- `find` (as post-exploitation tool)
-- `mysql`
+- `arp-scan`, `nmap` (network reconnaissance and port scanning)
+- `drupalgeddon2.rb` (public exploit from GitHub: dreadlocked/Drupalgeddon2)
+- `find` (SUID binary discovery and privilege escalation)
 
 ---
 
