@@ -1,4 +1,4 @@
-9# DC-1 (VulnHub) — Penetration Test Report
+# DC-1 (VulnHub) — Penetration Test Report
 
 **Date:** November 17, 2026  
 **Author:** Pawnfs  
