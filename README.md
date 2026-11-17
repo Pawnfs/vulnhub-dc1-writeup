@@ -25,7 +25,7 @@ DC-1 is a beginner-level virtual machine from VulnHub, designed for practicing b
 sudo arp-scan -l
 ```
 
-Discovered target machine — MAC address `00:0c:29:68:f8:47`, IP `192.168.147.XXX`.
+Discovered target machine on the lab subnet — IP `192.168.147.XXX`.
 
 ![Network Discovery](assets/arp_scan.png)
 
@@ -74,7 +74,6 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 
 ![Exploit Execution](assets/exploit.png)
-![Reverse Shell](assets/reverse_shell.png)
 
 ---
 
@@ -86,10 +85,7 @@ Through the exploit's interactive mode (HTTP requests to `shell.php`), filesyste
 |------|----------|------|
 | flag1 | `/var/www/flag1.txt` | "Every good CMS needs a config file — and so do you" (points to `sites/default/settings.php`) |
 
-The file `sites/default/settings.php` reveals Drupal database connection credentials — user `dbuser`; the `users` table in the database stores the administrator's password hash.
-
-![Settings.php](assets/settings_php.png)
-![MySQL Session](assets/mysql_session.png)
+The file `sites/default/settings.php` reveals Drupal database connection credentials — user `dbuser`; the `users` table in the database stores the administrator's password hash. These credentials were used to access the MySQL backend directly and enumerate user records.
 
 ---
 
@@ -112,13 +108,18 @@ Direct execution of `find . -exec /bin/sh -p \; -quit` did not yield an interact
 **Solution:** Use `find`'s elevated privileges to directly read protected files, without spawning an interactive shell:
 
 ```bash
-find /root -type f -exec cat {} \;
+# Verify root execution
+find . -exec "whoami" \; -quit
+# Output: root
+
+# Read all flags
+find / -name "flag*.txt" -exec echo "=== {} ===" \; -exec /bin/cat {} \;
 ```
 
 Since `find` runs with effective UID 0, traversal of the `/root` directory and reading `thefinalflag.txt` succeeds, even though `www-data` has no direct access to this directory. This confirms full system compromise.
 
 ![Root Verification](assets/root_whoami.png)
-![Root Flag](assets/flag4.png)
+![Flags](assets/flag4.png)
 
 ---
 
